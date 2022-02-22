@@ -1,16 +1,11 @@
 package com.knavid;
 
-public class Call implements Action {
-
-    private String number;
-
-    public Call(String number) {
-        this.number = number;
-    }
+public class Call<T> implements Action<T> {
 
     @Override
-    public void execute() {
-        System.out.print("Number %s has called".formatted(this.number));        
+    public void execute(T object) {
+        Phonable p = (Phonable) object;
+        System.out.print("Number %s has called".formatted(p.getPhoneNumber()));
     }
     
 }

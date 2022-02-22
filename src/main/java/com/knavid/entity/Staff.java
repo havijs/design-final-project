@@ -1,12 +1,17 @@
 package com.knavid.entity;
 
-public class Staff {
+import com.knavid.Emailable;
+import com.knavid.Phonable;
+
+public class Staff implements Phonable, Emailable {
     private int id;
     private String fullName;
     private String emailAddress;
     private String role;
     private String skype;
     private String mobileNumber;
+
+    private static int nextId = 1000;
 
     public Staff(int id, String fullName, String emailAddress, String role, String skype, String mobileNumber) {
         this.id = id;
@@ -16,6 +21,18 @@ public class Staff {
         this.skype = skype;
         this.mobileNumber = mobileNumber;
     }
+
+    public Staff(String fullName, String emailAddress, String role, String skype, String mobileNumber) {
+        this.id = nextId;
+        this.fullName = fullName;
+        this.emailAddress = emailAddress;
+        this.role = role;
+        this.skype = skype;
+        this.mobileNumber = mobileNumber;
+
+        nextId++;
+    }
+
 
     public int getId() {
         return this.id;
@@ -59,6 +76,16 @@ public class Staff {
 
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
+    }
+
+    @Override
+    public String getPhoneNumber() {
+        return this.mobileNumber;
+    }
+
+    @Override
+    public String getEmail() {
+        return this.emailAddress;
     }
 
 }

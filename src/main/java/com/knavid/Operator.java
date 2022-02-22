@@ -17,8 +17,8 @@ public class Operator<T> {
     public void create(T t) {
         for (CreateEvent<T> event : createEvents) {
             if(event.checkCondition(t)){
-                for (Action action : event.getActions()) {
-                    action.execute();
+                for (Action<T> action : event.getActions()) {
+                    action.execute(t);
                 }
             }
         }
@@ -28,8 +28,8 @@ public class Operator<T> {
     public void update(T t, String field) {
         for (UpdateEvent<T> event : updateEvents) {
             if(event.getField().equals(field) && event.checkCondition(t)) {
-                for (Action action : event.getActions()) {
-                    action.execute();
+                for (Action<T> action : event.getActions()) {
+                    action.execute(t);
                 }
             }
         }
@@ -39,8 +39,8 @@ public class Operator<T> {
     public void remove(T t) {
         for (RemoveEvent<T> event : removeEvents) {
             if(event.checkCondition(t)){
-                for (Action action : event.getActions()) {
-                    action.execute();
+                for (Action<T> action : event.getActions()) {
+                    action.execute(t);
                 }
             }
         }

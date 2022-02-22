@@ -2,7 +2,10 @@ package com.knavid.entity;
 
 import java.util.Date;
 
-public class Customer {
+import com.knavid.Emailable;
+import com.knavid.Phonable;
+
+public class Customer implements Phonable, Emailable {
     private int id;
     private String firstName;
     private String lastName;
@@ -10,6 +13,7 @@ public class Customer {
     private int age;
     private Date registrationDate;
     private String phoneNumber;
+    private static int nextId = 1000;
 
     public Customer(int id, String firstName, String lastName, String email, int age, Date registrationDate, String phoneNumber) {
         this.id = id;
@@ -19,6 +23,17 @@ public class Customer {
         this.age = age;
         this.registrationDate = registrationDate;
         this.phoneNumber = phoneNumber;
+    }
+    public Customer(String firstName, String lastName, String email, int age, Date registrationDate, String phoneNumber) {
+        this.id = nextId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.age = age;
+        this.registrationDate = registrationDate;
+        this.phoneNumber = phoneNumber;
+
+        nextId++;
     }
 
     public void setId(int id) {

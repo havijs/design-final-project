@@ -14,7 +14,7 @@ public class ChangeField<T> implements Action<T> {
 
     @Override
     public void execute(T t) {
-       operator.update(t, field); 
+       operator.update(t, field, value); 
     }
     
 }

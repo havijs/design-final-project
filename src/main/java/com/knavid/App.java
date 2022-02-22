@@ -113,38 +113,28 @@ public class App
         System.out.println("Which field you want to update?\n1. First name\n2. Last name\n3. Email \n4. Age\n5. Phone number");
         int choice = sc.nextInt();
         sc.nextLine();
+        System.out.println("Enter the value of field:");
+        String value = sc.next();
         switch (choice) {
             case 1:
                 fieldName = "firstName";
-                String firstName = sc.next();
-                c.setFirstName(firstName);
                 break;
             case 2:
                 fieldName = "lastName";
-                String lastName = sc.next();
-                c.setLastName(lastName);
                 break;
             case 3:
                 fieldName = "email";
-                String email = sc.next();
-                c.setEmail(email);
                 break;
             case 4:
                 fieldName = "age";
-                int age = sc.nextInt();
-                sc.nextLine();
-                c.setAge(age);
                 break;
             case 5:
                 fieldName = "phoneNumber";
-                String phoneNumber = sc.next();
-                sc.nextLine();
-                c.setPhoneNumber(phoneNumber);
                 break;
 
         }
 
-        customerOperator.update(c, fieldName);
+        customerOperator.update(c, fieldName, value);
 
     }
 
@@ -195,36 +185,27 @@ public class App
         System.out.println("Which field you want to update?\n1. Full name\n2. Email address\n3. Role \n4. Skype\n5. Mobile number");
         int choice = sc.nextInt();
         sc.nextLine();
+        System.out.println("Enter the value of field");
+        String value = sc.next();
         switch (choice) {
             case 1:
                 fieldName = "fullName";
-                String fullName = sc.next();
-                s.setFullName(fullName);
                 break;
             case 2:
                 fieldName = "emailAddress";
-                String emailAddress = sc.next();
-                s.setEmailAddress(emailAddress);
                 break;
             case 3:
                 fieldName = "role";
-                String role = sc.next();
-                s.setRole(role);
                 break;
             case 4:
                 fieldName = "skype";
-                String skype = sc.next();
-                s.setSkype(skype);
                 break;
             case 5:
                 fieldName = "mobileNumber";
-                String mobileNumber = sc.next();
-                s.setMobileNumber(mobileNumber);
                 break;
-
         }
 
-        staffOperator.update(s, fieldName);
+        staffOperator.update(s, fieldName, value);
 
     }
 

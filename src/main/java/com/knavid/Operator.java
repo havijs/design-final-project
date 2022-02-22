@@ -1,5 +1,6 @@
 package com.knavid;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,14 +26,23 @@ public class Operator<T> {
 
     }
 
-    public void update(T t, String field) {
+    public void update(T t, String fieldName, Object value) {
         for (UpdateEvent<T> event : updateEvents) {
-            if(event.getField().equals(field) && event.checkCondition(t)) {
+            if(event.getField().equals(fieldName) && event.checkCondition(t)) {
                 for (Action<T> action : event.getActions()) {
                     action.execute(t);
                 }
             }
         }
+        Field field;
+        try {
+            field = t.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(t, value);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 

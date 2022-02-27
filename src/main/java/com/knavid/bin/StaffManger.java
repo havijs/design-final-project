@@ -2,22 +2,22 @@ package com.knavid.bin;
 
 import java.util.List;
 
-import com.knavid.entity.Customer;
+import com.knavid.entity.Staff;
 
-public class CustomerManager implements DataManager<Customer> {
+public class StaffManger implements DataManager<Staff>{
 
     @Override
-    public List<Customer> findAll() {
+    public List<Staff> findAll() {
         return null;
     }
 
     @Override
-    public Customer findById(int id) {
+    public Staff findById(int id) {
         return null;
     }
 
     @Override
-    public void add(Customer t) {
+    public void add(Staff t) {
         
     }
 
@@ -25,5 +25,4 @@ public class CustomerManager implements DataManager<Customer> {
     public void remove(int id) {
         
     }
-
 }

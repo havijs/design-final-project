@@ -1,5 +1,5 @@
 package com.knavid;
 
-public interface Action {
-    public void execute();
+public interface Action<T> {
+    public void execute(T t);
 }

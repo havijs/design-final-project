@@ -1,5 +1,6 @@
 package com.knavid;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,30 +18,39 @@ public class Operator<T> {
     public void create(T t) {
         for (CreateEvent<T> event : createEvents) {
             if(event.checkCondition(t)){
-                for (Action action : event.getActions()) {
-                    action.execute();
+                for (Action<T> action : event.getActions()) {
+                    action.execute(t);
                 }
             }
         }
 
     }
 
-    public void update(T t, String field) {
+    public void update(T t, String fieldName, Object value) {
         for (UpdateEvent<T> event : updateEvents) {
-            if(event.getField().equals(field) && event.checkCondition(t)) {
-                for (Action action : event.getActions()) {
-                    action.execute();
+            if(event.getField().equals(fieldName) && event.checkCondition(t)) {
+                for (Action<T> action : event.getActions()) {
+                    action.execute(t);
                 }
             }
         }
+        Field field;
+        try {
+            field = t.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(t, value);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 
     public void remove(T t) {
         for (RemoveEvent<T> event : removeEvents) {
             if(event.checkCondition(t)){
-                for (Action action : event.getActions()) {
-                    action.execute();
+                for (Action<T> action : event.getActions()) {
+                    action.execute(t);
                 }
             }
         }

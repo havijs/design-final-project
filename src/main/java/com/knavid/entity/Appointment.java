@@ -8,11 +8,22 @@ public class Appointment {
     private Staff staff;
     private Customer customer;
 
+    private static int nextId = 1000;
+
     public Appointment(int id, Date date, Staff staff, Customer customer) {
         this.id = id;
         this.date = date;
         this.staff = staff;
         this.customer = customer;
+    }
+
+    public Appointment(Date date, Staff staff, Customer customer) {
+        this.id = nextId;
+        this.date = date;
+        this.staff = staff;
+        this.customer = customer;
+
+        nextId++;
     }
 
     public int getId() {

@@ -1,16 +1,11 @@
 package com.knavid;
 
-public class Email implements Action {
+public class Email<T> implements Action<T> {
     
-    private String email;
-
-    public Email(String email) {
-        this.email = email;
-    }
-
     @Override
-    public void execute() {
-        System.out.print("An email has sent to %s".formatted(this.email));        
+    public void execute(T object) {
+        Emailable e = (Emailable) object;
+        System.out.print("An email has sent to %s".formatted(e.getEmail()));        
     }
     
 }

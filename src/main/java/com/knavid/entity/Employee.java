@@ -92,7 +92,6 @@ public class Employee implements Phonable, Emailable {
         System.out.println("Id : " + this.getId());
         System.out.println("Full Name : " + this.getFullName());
         System.out.println("Email : " + this.getEmailAddress());
-        System.out.println("Email : " + this.getEmail());
         System.out.println("Role : " + this.getRole());
         System.out.println("Skype : " + this.getSkype());
         System.out.println("Mobile No : " + this.getMobileNumber());

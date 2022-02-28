@@ -3,6 +3,7 @@ package com.knavid.bin;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.knavid.entity.Customer;
 import com.knavid.entity.Employee;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -66,9 +67,7 @@ public class EmployeeManager implements DataManager<Employee> {
     }
 
     public void update(Employee c,String key,Object up) {
-
-        JSONObject cust = new JSONObject();
-        cust.put("employee", new Gson().toJson(c));
+        List<Employee> employees = read();
 
         if(key.equals("fullName")){
             c.setFullName((String) up);
@@ -86,72 +85,75 @@ public class EmployeeManager implements DataManager<Employee> {
             c.setMobileNumber((String) up);
         }
 
-        JSONObject cust1 = new JSONObject();
-        cust1.put("customer", new Gson().toJson(c));
-
-        JSONParser jsonParser = new JSONParser();
-
-        try (FileReader reader = new FileReader("employees.json")) {
-            //Read JSON file
-            Object obj = jsonParser.parse(reader);
-
-            employeeList = (JSONArray) obj;
-
-            employeeList.remove(cust);
-
-            employeeList.add(cust1);
-
-            try (FileWriter file = new FileWriter("employees.json")) {
-                //We can write any JSONArray or JSONObject instance to the file
-                file.write(employeeList.toJSONString());
-                file.flush();
-
-            } catch (IOException e) {
-                System.out.println("wrong");
+        for (Employee employee : employees) {
+            if (c.getId() == employee.getId()) {
+                employees.remove(employee);
+                employees.add(c);
+                break;
             }
+        }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        try (FileWriter file = new FileWriter("employees.json")) {
+            // We can write any JSONArray or JSONObject instance to the file
+            file.write(new Gson().toJson(employees));
+            file.flush();
+
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+            System.out.println("wrong");
         }
     }
 
 
     public void remove(Employee c){
-
-        JSONObject cust = new JSONObject();
-        cust.put("employee", new Gson().toJson(c));
-
-        JSONParser jsonParser = new JSONParser();
-
-        try (FileReader reader = new FileReader("employees.json")) {
-            //Read JSON file
-            Object obj = jsonParser.parse(reader);
-
-            employeeList = (JSONArray) obj;
-
-            employeeList.remove(cust);
-
-            try (FileWriter file = new FileWriter("employees.json")) {
-                //We can write any JSONArray or JSONObject instance to the file
-                file.write(employeeList.toJSONString());
-                file.flush();
-
-            } catch (IOException e) {
-                System.out.println("wrong");
+        List<Employee> employees = read();
+        for (Employee employee : employees) {
+            if (c.getId() == employee.getId()) {
+                employees.remove(employee);
+                break;
             }
+        }
+        try (FileWriter file = new FileWriter("employees.json")) {
+            // We can write any JSONArray or JSONObject instance to the file
+            file.write(new Gson().toJson(employees));
+            file.flush();
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+            System.out.println("wrong");
         }
 
+
+
+
+
+//        JSONObject cust = new JSONObject();
+//        cust.put("employee", new Gson().toJson(c));
+//
+//        JSONParser jsonParser = new JSONParser();
+//
+//        try (FileReader reader = new FileReader("employees.json")) {
+//            // Read JSON file
+//            Object obj = jsonParser.parse(reader);
+//
+//            employeeList = (JSONArray) obj;
+//
+//            employeeList.remove(cust);
+//
+//            try (FileWriter file = new FileWriter("employees.json")) {
+//                // We can write any JSONArray or JSONObject instance to the file
+//                file.write(employeeList.toJSONString());
+//                file.flush();
+//
+//            } catch (IOException e) {
+//                System.out.println("wrong");
+//            }
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
     }
 }

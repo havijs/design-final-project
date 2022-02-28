@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.Iterator;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -25,14 +24,12 @@ public class CustomerManager implements DataManager<Customer> {
     }
 
     public void add(Customer cus) {
-        JSONObject cus1 = new JSONObject();
-        cus1.put("customer", new Gson().toJson(cus));
-
-        customerList.add(cus1);
+        List<Customer> customers = read();
+        customers.add(cus);
 
         try (FileWriter file = new FileWriter("customers.json")) {
-            //We can write any JSONArray or JSONObject instance to the file
-            file.write(customerList.toJSONString());
+            // We can write any JSONArray or JSONObject instance to the file
+            file.write(new Gson().toJson(customers));
             file.flush();
 
         } catch (IOException e) {
@@ -43,7 +40,8 @@ public class CustomerManager implements DataManager<Customer> {
 
     public List<Customer> read() {
 
-        Type TYPE = new TypeToken<List<Customer>>() {}.getType();
+        Type TYPE = new TypeToken<List<Customer>>() {
+        }.getType();
         Gson gson = new Gson();
         JsonReader reader = null;
         try {
@@ -55,12 +53,11 @@ public class CustomerManager implements DataManager<Customer> {
         return data;
     }
 
-
-    public Customer findById(int id){
+    public Customer findById(int id) {
         List<Customer> customerList = read();
 
-        for(Customer customer: customerList){
-            if(customer.getId() == id){
+        for (Customer customer : customerList) {
+            if (customer.getId() == id) {
                 return customer;
             }
         }
@@ -68,65 +65,46 @@ public class CustomerManager implements DataManager<Customer> {
         return null;
     }
 
-    public void update(Customer c,String key,Object up) {
+    public void update(Customer c, String key, Object up) {
+        List<Customer> customers = read();
 
-        JSONObject cust = new JSONObject();
-        cust.put("customer", new Gson().toJson(c));
-
-        if(key.equals("id")){
+        if (key.equals("id")) {
             c.setId((Integer) up);
         }
-        if(key.equals("firstName")){
+        if (key.equals("firstName")) {
             c.setFirstName((String) up);
         }
-        if(key.equals("lastName")){
+        if (key.equals("lastName")) {
             c.setLastName((String) up);
         }
-        if(key.equals("email")){
+        if (key.equals("email")) {
             c.setEmail((String) up);
         }
-        if(key.equals("age")){
+        if (key.equals("age")) {
             c.setAge((Integer) up);
         }
-        if(key.equals("phoneNumber")){
+        if (key.equals("phoneNumber")) {
             c.setPhoneNumber((String) up);
         }
-
-        JSONObject cust1 = new JSONObject();
-        cust1.put("customer", new Gson().toJson(c));
-
-        JSONParser jsonParser = new JSONParser();
-
-        try (FileReader reader = new FileReader("customers.json")) {
-            //Read JSON file
-            Object obj = jsonParser.parse(reader);
-
-            customerList = (JSONArray) obj;
-
-            customerList.remove(cust);
-
-            customerList.add(cust1);
-
-            try (FileWriter file = new FileWriter("customers.json")) {
-                //We can write any JSONArray or JSONObject instance to the file
-                file.write(customerList.toJSONString());
-                file.flush();
-
-            } catch (IOException e) {
-                System.out.println("wrong");
+        for (Customer customer : customers) {
+            if (c.getId() == customer.getId()) {
+                customers.remove(customer);
+                customers.add(c);
+                break;
             }
+        }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        try (FileWriter file = new FileWriter("customers.json")) {
+            // We can write any JSONArray or JSONObject instance to the file
+            file.write(new Gson().toJson(customers));
+            file.flush();
+
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+            System.out.println("wrong");
         }
     }
 
-
-    public void remove(Customer c){
+    public void remove(Customer c) {
 
         JSONObject cust = new JSONObject();
         cust.put("customer", new Gson().toJson(c));
@@ -134,7 +112,7 @@ public class CustomerManager implements DataManager<Customer> {
         JSONParser jsonParser = new JSONParser();
 
         try (FileReader reader = new FileReader("customers.json")) {
-            //Read JSON file
+            // Read JSON file
             Object obj = jsonParser.parse(reader);
 
             customerList = (JSONArray) obj;
@@ -142,7 +120,7 @@ public class CustomerManager implements DataManager<Customer> {
             customerList.remove(cust);
 
             try (FileWriter file = new FileWriter("customers.json")) {
-                //We can write any JSONArray or JSONObject instance to the file
+                // We can write any JSONArray or JSONObject instance to the file
                 file.write(customerList.toJSONString());
                 file.flush();
 
@@ -157,7 +135,6 @@ public class CustomerManager implements DataManager<Customer> {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
 
     }
 }

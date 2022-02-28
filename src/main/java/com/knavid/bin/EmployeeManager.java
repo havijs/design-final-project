@@ -3,8 +3,6 @@ package com.knavid.bin;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import com.knavid.entity.Appointment;
-import com.knavid.entity.Customer;
 import com.knavid.entity.Employee;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -26,14 +24,12 @@ public class EmployeeManager implements DataManager<Employee> {
     }
 
     public void add(Employee emp) {
-        JSONObject cus1 = new JSONObject();
-        cus1.put("employee", new Gson().toJson(emp));
+        List<Employee> employees = read();
+        employees.add(emp);
 
-        employeeList.add(cus1);
-
-        try (FileWriter file = new FileWriter("employeeList.json")) {
+        try (FileWriter file = new FileWriter("employees.json")) {
             //We can write any JSONArray or JSONObject instance to the file
-            file.write(employeeList.toJSONString());
+            file.write(new Gson().toJson(employees));
             file.flush();
 
         } catch (IOException e) {
@@ -47,7 +43,7 @@ public class EmployeeManager implements DataManager<Employee> {
         Gson gson = new Gson();
         JsonReader reader = null;
         try {
-            reader = new JsonReader(new FileReader("employeeList.json"));
+            reader = new JsonReader(new FileReader("employees.json"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -95,7 +91,7 @@ public class EmployeeManager implements DataManager<Employee> {
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("employeeList.json")) {
+        try (FileReader reader = new FileReader("employees.json")) {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
 
@@ -105,7 +101,7 @@ public class EmployeeManager implements DataManager<Employee> {
 
             employeeList.add(cust1);
 
-            try (FileWriter file = new FileWriter("employeeList.json")) {
+            try (FileWriter file = new FileWriter("employees.json")) {
                 //We can write any JSONArray or JSONObject instance to the file
                 file.write(employeeList.toJSONString());
                 file.flush();
@@ -131,7 +127,7 @@ public class EmployeeManager implements DataManager<Employee> {
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("employeeList.json")) {
+        try (FileReader reader = new FileReader("employees.json")) {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
 
@@ -139,7 +135,7 @@ public class EmployeeManager implements DataManager<Employee> {
 
             employeeList.remove(cust);
 
-            try (FileWriter file = new FileWriter("employeeList.json")) {
+            try (FileWriter file = new FileWriter("employees.json")) {
                 //We can write any JSONArray or JSONObject instance to the file
                 file.write(employeeList.toJSONString());
                 file.flush();

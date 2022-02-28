@@ -26,15 +26,13 @@ public class AppointmentManager implements DataManager<Appointment> {
     public AppointmentManager() {
     }
 
-    public void add(Appointment emp) {
-        JSONObject cus1 = new JSONObject();
-        cus1.put("Appointment", new Gson().toJson(emp));
+    public void add(Appointment appointment) {
+        List<Appointment> appointments = read();
+        appointments.add(appointment);
 
-        appointmentList.add(cus1);
-
-        try (FileWriter file = new FileWriter("appointmentList.json")) {
+        try (FileWriter file = new FileWriter("appointments.json")) {
             //We can write any JSONArray or JSONObject instance to the file
-            file.write(appointmentList.toJSONString());
+            file.write(new Gson().toJson(appointments));
             file.flush();
 
         } catch (IOException e) {
@@ -48,7 +46,7 @@ public class AppointmentManager implements DataManager<Appointment> {
         Gson gson = new Gson();
         JsonReader reader = null;
         try {
-            reader = new JsonReader(new FileReader("appointmentList.json"));
+            reader = new JsonReader(new FileReader("appointments.json"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -92,7 +90,7 @@ public class AppointmentManager implements DataManager<Appointment> {
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("employeeList.json")) {
+        try (FileReader reader = new FileReader("appointme.json")) {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
 
@@ -102,7 +100,7 @@ public class AppointmentManager implements DataManager<Appointment> {
 
             appointmentList.add(cust1);
 
-            try (FileWriter file = new FileWriter("employeeList.json")) {
+            try (FileWriter file = new FileWriter("appointme.json")) {
                 //We can write any JSONArray or JSONObject instance to the file
                 file.write(appointmentList.toJSONString());
                 file.flush();
@@ -128,7 +126,7 @@ public class AppointmentManager implements DataManager<Appointment> {
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("employeeList.json")) {
+        try (FileReader reader = new FileReader("appointme.json")) {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
 
@@ -136,7 +134,7 @@ public class AppointmentManager implements DataManager<Appointment> {
 
             appointmentList.remove(cust);
 
-            try (FileWriter file = new FileWriter("employeeList.json")) {
+            try (FileWriter file = new FileWriter("appointme.json")) {
                 //We can write any JSONArray or JSONObject instance to the file
                 file.write(appointmentList.toJSONString());
                 file.flush();

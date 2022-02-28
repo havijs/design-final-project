@@ -8,7 +8,6 @@ import java.util.Scanner;
 import com.knavid.bin.AppointmentManager;
 import com.knavid.bin.CustomerManager;
 import com.knavid.bin.EmployeeManager;
-import com.knavid.bin.EmployeeManager;
 import com.knavid.entity.Appointment;
 import com.knavid.entity.Customer;
 import com.knavid.entity.Employee;

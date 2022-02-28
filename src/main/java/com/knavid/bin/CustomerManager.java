@@ -12,9 +12,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.knavid.entity.Customer;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 public class CustomerManager implements DataManager<Customer> {
 
@@ -109,7 +106,7 @@ public class CustomerManager implements DataManager<Customer> {
 
         for (Customer customer : customers) {
             if (customer.getId() == c.getId()) {
-                customers.remove(c);
+                customers.remove(customer);
                 break;
             }
         }

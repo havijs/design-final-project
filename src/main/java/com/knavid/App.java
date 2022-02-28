@@ -28,16 +28,26 @@ public class App
         Action<Customer> action1 = new Call<>();
         Action<Customer> action2 = new Email<>();
         Action<Customer> action3 = new ChangeField<>("firstName", customerOperator, "Navid");
-        UpdateEvent<Customer> createEvent = new UpdateEvent<>("age > 10 OR firstName = Navid", "firstName");
-        CreateEvent<Customer> updateEvent = new CreateEvent<>("age < 10");
+        UpdateEvent<Customer> updateEvent = new UpdateEvent<>("age > 10 OR firstName = Navid", "firstName");
+        CreateEvent<Customer> createEvent = new CreateEvent<>("age < 10");
         RemoveEvent<Customer> removeEvent = new RemoveEvent<>("age < 10");
         createEvent.addAction(action1);
         createEvent.addAction(action2);
         updateEvent.addAction(action3);
         removeEvent.addAction(action3);
-        customerOperator.addUpdateEvent(createEvent);
-        customerOperator.addCreateEvent(updateEvent);
+        customerOperator.addUpdateEvent(updateEvent);
+        customerOperator.addCreateEvent(createEvent);
         customerOperator.addRemoveEvent(removeEvent);
+
+        Action<Employee> action4 = new Call<>();
+        Action<Employee> action5 = new Email<>();
+        Action<Employee> action6 = new ChangeField<>("fullName", staffOperator, "Manager");
+        UpdateEvent<Employee> updateEvent2 = new UpdateEvent<>("role = manager", "role");
+        CreateEvent<Employee> createEvent2 = new CreateEvent<>("role = manager");
+
+        createEvent2.addAction(action6);
+
+        staffOperator.addCreateEvent(createEvent2);
 
         sc = new Scanner(System.in);
         do {
@@ -200,7 +210,7 @@ public class App
         System.out.println("Enter customer id");
         int id = sc.nextInt();
         sc.nextLine();
-        customerManager.remove(customerManager.findById(id));
+        customerOperator.remove(customerManager.findById(id));
     }
 
     private static void staffOperation(int choice) {
@@ -271,7 +281,7 @@ public class App
         System.out.println("Enter Staff id");
         int id = sc.nextInt();
         sc.nextLine();
-        employeeManager.remove(employeeManager.findById(id));
+        staffOperator.remove(employeeManager.findById(id));
     }
 
 
@@ -314,7 +324,7 @@ public class App
         System.out.println("Enter Appointment id");
         int id = sc.nextInt();
         sc.nextLine();
-        appointmentManager.remove(appointmentManager.findById(id));
+        appointmentOperator.remove(appointmentManager.findById(id));
     }
 
     private static void createEvent() {

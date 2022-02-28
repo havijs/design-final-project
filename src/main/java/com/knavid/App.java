@@ -19,9 +19,9 @@ public class App
     private static CustomerManager customerManager = new CustomerManager();
     private static EmployeeManager employeeManager = new EmployeeManager();
     private static AppointmentManager appointmentManager = new AppointmentManager();
-    private static Operator<Customer> customerOperator = new Operator<>(customerManager);
-    private static Operator<Employee> staffOperator = new Operator<>(employeeManager);
-    private static Operator<Appointment> appointmentOperator = new Operator<>(appointmentManager);
+    private static CustomerOperator customerOperator = new CustomerOperator(customerManager);
+    private static EmployeeOperator staffOperator = new EmployeeOperator(employeeManager);
+    private static AppointmentOperator appointmentOperator = new AppointmentOperator(appointmentManager);
 
     public static void main( String[] args )
     {

@@ -1,5 +1,7 @@
 package com.knavid;
 
+import com.knavid.bin.DataManager;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +10,11 @@ public class Operator<T> {
     private List<UpdateEvent<T>> updateEvents;
     private List<CreateEvent<T>> createEvents;
     private List<RemoveEvent<T>> removeEvents;
+    private DataManager<T> dataManager;
 
-    public Operator() {
+
+    public Operator(DataManager<T> dataManager) {
+        this.dataManager = dataManager;
         this.updateEvents = new ArrayList<>();
         this.createEvents = new ArrayList<>();
         this.removeEvents = new ArrayList<>();
@@ -23,6 +28,7 @@ public class Operator<T> {
                 }
             }
         }
+        dataManager.add(t);
 
     }
 
@@ -34,14 +40,7 @@ public class Operator<T> {
                 }
             }
         }
-        Field field;
-        try {
-            field = t.getClass().getDeclaredField(fieldName);
-            field.setAccessible(true);
-            field.set(t, value);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        dataManager.update(t,fieldName,value);
 
 
     }
@@ -54,6 +53,7 @@ public class Operator<T> {
                 }
             }
         }
+        dataManager.remove(t);
 
     }
 

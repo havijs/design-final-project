@@ -3,7 +3,7 @@ package com.knavid.entity;
 import com.knavid.Emailable;
 import com.knavid.Phonable;
 
-public class Staff implements Phonable, Emailable {
+public class Employee implements Phonable, Emailable {
     private int id;
     private String fullName;
     private String emailAddress;
@@ -13,7 +13,7 @@ public class Staff implements Phonable, Emailable {
 
     private static int nextId = 1000;
 
-    public Staff(int id, String fullName, String emailAddress, String role, String skype, String mobileNumber) {
+    public Employee(int id, String fullName, String emailAddress, String role, String skype, String mobileNumber) {
         this.id = id;
         this.fullName = fullName;
         this.emailAddress = emailAddress;
@@ -22,7 +22,7 @@ public class Staff implements Phonable, Emailable {
         this.mobileNumber = mobileNumber;
     }
 
-    public Staff(String fullName, String emailAddress, String role, String skype, String mobileNumber) {
+    public Employee(String fullName, String emailAddress, String role, String skype, String mobileNumber) {
         this.id = nextId;
         this.fullName = fullName;
         this.emailAddress = emailAddress;
@@ -88,4 +88,13 @@ public class Staff implements Phonable, Emailable {
         return this.emailAddress;
     }
 
+    public void print() {
+        System.out.println("Id : " + this.getId());
+        System.out.println("Full Name : " + this.getFullName());
+        System.out.println("Email : " + this.getEmailAddress());
+        System.out.println("Email : " + this.getEmail());
+        System.out.println("Role : " + this.getRole());
+        System.out.println("Skype : " + this.getSkype());
+        System.out.println("Mobile No : " + this.getMobileNumber());
+    }
 }

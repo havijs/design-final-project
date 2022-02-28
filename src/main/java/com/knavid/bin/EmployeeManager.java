@@ -1,14 +1,5 @@
 package com.knavid.bin;
 
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.Date;
-import java.util.List;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
@@ -20,21 +11,29 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class AppointmentManager implements DataManager<Appointment> {
-    private JSONArray appointmentList = new JSONArray();
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.List;
 
-    public AppointmentManager() {
+public class EmployeeManager implements DataManager<Employee> {
+
+    private JSONArray employeeList = new JSONArray();
+
+    public EmployeeManager() {
     }
 
-    public void add(Appointment emp) {
+    public void add(Employee emp) {
         JSONObject cus1 = new JSONObject();
-        cus1.put("Appointment", new Gson().toJson(emp));
+        cus1.put("employee", new Gson().toJson(emp));
 
-        appointmentList.add(cus1);
+        employeeList.add(cus1);
 
-        try (FileWriter file = new FileWriter("appointmentList.json")) {
+        try (FileWriter file = new FileWriter("employeeList.json")) {
             //We can write any JSONArray or JSONObject instance to the file
-            file.write(appointmentList.toJSONString());
+            file.write(employeeList.toJSONString());
             file.flush();
 
         } catch (IOException e) {
@@ -43,48 +42,52 @@ public class AppointmentManager implements DataManager<Appointment> {
 
     }
 
-    public List<Appointment> read() {
-        Type TYPE = new TypeToken<List<Appointment>>() {}.getType();
+    public List<Employee> read() {
+        Type TYPE = new TypeToken<List<Employee>>() {}.getType();
         Gson gson = new Gson();
         JsonReader reader = null;
         try {
-            reader = new JsonReader(new FileReader("appointmentList.json"));
+            reader = new JsonReader(new FileReader("employeeList.json"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        List<Appointment> data = gson.fromJson(reader, TYPE); // contains the whole reviews list
+        List<Employee> data = gson.fromJson(reader, TYPE); // contains the whole reviews list
         return data;
 
     }
 
-    public Appointment findById(int id){
-        List<Appointment> appointmentList = read();
 
-        for(Appointment appointment: appointmentList){
-            if(appointment.getId() == id){
-                return appointment;
+    public Employee findById(int id){
+        List<Employee> employeeList = read();
+
+        for(Employee employee: employeeList){
+            if(employee.getId() == id){
+                return employee;
             }
         }
 
         return null;
     }
 
-    public void update(Appointment c,String key,Object up) {
+    public void update(Employee c,String key,Object up) {
 
         JSONObject cust = new JSONObject();
         cust.put("employee", new Gson().toJson(c));
 
-        if(key.equals("id")){
-            c.setId((Integer) up);
+        if(key.equals("fullName")){
+            c.setFullName((String) up);
         }
-        if(key.equals("date")){
-            c.setDate((Date) up);
+        if(key.equals("emailAddress")){
+            c.setEmailAddress((String) up);
         }
-        if(key.equals("employee")){
-            c.setEmployee((Employee) up);
+        if(key.equals("role")){
+            c.setRole((String) up);
         }
-        if(key.equals("customer")){
-            c.setCustomer((Customer) up);
+        if(key.equals("skype")){
+            c.setSkype((String) up);
+        }
+        if(key.equals("phoneNumber")){
+            c.setMobileNumber((String) up);
         }
 
         JSONObject cust1 = new JSONObject();
@@ -96,15 +99,15 @@ public class AppointmentManager implements DataManager<Appointment> {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
 
-            appointmentList = (JSONArray) obj;
+            employeeList = (JSONArray) obj;
 
-            appointmentList.remove(cust);
+            employeeList.remove(cust);
 
-            appointmentList.add(cust1);
+            employeeList.add(cust1);
 
             try (FileWriter file = new FileWriter("employeeList.json")) {
                 //We can write any JSONArray or JSONObject instance to the file
-                file.write(appointmentList.toJSONString());
+                file.write(employeeList.toJSONString());
                 file.flush();
 
             } catch (IOException e) {
@@ -121,7 +124,7 @@ public class AppointmentManager implements DataManager<Appointment> {
     }
 
 
-    public void remove(Appointment c){
+    public void remove(Employee c){
 
         JSONObject cust = new JSONObject();
         cust.put("employee", new Gson().toJson(c));
@@ -132,13 +135,13 @@ public class AppointmentManager implements DataManager<Appointment> {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
 
-            appointmentList = (JSONArray) obj;
+            employeeList = (JSONArray) obj;
 
-            appointmentList.remove(cust);
+            employeeList.remove(cust);
 
             try (FileWriter file = new FileWriter("employeeList.json")) {
                 //We can write any JSONArray or JSONObject instance to the file
-                file.write(appointmentList.toJSONString());
+                file.write(employeeList.toJSONString());
                 file.flush();
 
             } catch (IOException e) {

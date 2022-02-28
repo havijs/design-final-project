@@ -7,20 +7,22 @@ import java.util.Scanner;
 
 import com.knavid.bin.AppointmentManager;
 import com.knavid.bin.CustomerManager;
-import com.knavid.bin.StaffManger;
+import com.knavid.bin.EmployeeManager;
+import com.knavid.bin.EmployeeManager;
 import com.knavid.entity.Appointment;
 import com.knavid.entity.Customer;
-import com.knavid.entity.Staff;
+import com.knavid.entity.Employee;
 
 public class App 
 {
     private static Scanner sc;
-    private static Operator<Customer> customerOperator = new Operator<>();
-    private static Operator<Staff> staffOperator = new Operator<>();
-    private static Operator<Appointment> appointmentOperator = new Operator<>();
+
     private static CustomerManager customerManager = new CustomerManager();
-    private static StaffManger staffManger = new StaffManger();
+    private static EmployeeManager employeeManager = new EmployeeManager();
     private static AppointmentManager appointmentManager = new AppointmentManager();
+    private static Operator<Customer> customerOperator = new Operator<>(customerManager);
+    private static Operator<Employee> staffOperator = new Operator<>(employeeManager);
+    private static Operator<Appointment> appointmentOperator = new Operator<>(appointmentManager);
 
     public static void main( String[] args )
     {
@@ -46,6 +48,49 @@ public class App
     }
 
     private static void listEntities() {
+        System.out.println("Choose operation: \n 1. Customer\n2. Employee\n3. Appointment");
+        int choice = sc.nextInt();
+        sc.nextLine();
+        switch(choice) {
+            case 1:
+                printCustomers();
+                break;
+            case 2:
+                printEmployees();
+                break;
+            case 3:
+                printAppointments();
+                break;
+            default:
+                System.out.println("Choice does not exist");
+        }
+    }
+
+    private static void printAppointments() {
+        List<Appointment> appointmentList = appointmentManager.read();
+
+        for(int i = 0; i < appointmentList.size(); i++)
+        {
+            appointmentList.get(i).print();
+        }
+    }
+
+    private static void printEmployees() {
+        List<Employee> employeeList = employeeManager.read();
+
+        for(int i = 0; i < employeeList.size(); i++)
+        {
+            employeeList.get(i).print();
+        }
+    }
+
+    private static void printCustomers() {
+        List<Customer> customerList = customerManager.read();
+
+        for(int i = 0; i < customerList.size(); i++)
+        {
+            customerList.get(i).print();
+        }
 
     }
 
@@ -142,7 +187,7 @@ public class App
         System.out.println("Enter customer id");
         int id = sc.nextInt();
         sc.nextLine();
-        customerManager.remove(id);
+        customerManager.remove(customerManager.findById(id));
     }
 
     private static void staffOperation(int choice) {
@@ -172,7 +217,7 @@ public class App
         String skype = sc.next();
         System.out.println("Staff mobile number:");
         String mobileNumber = sc.next();
-        Staff s = new Staff(fullName, emailAddress, role, skype, mobileNumber);
+        Employee s = new Employee(fullName, emailAddress, role, skype, mobileNumber);
         staffOperator.create(s);
     }
 
@@ -181,7 +226,7 @@ public class App
         System.out.println("Enter Staff id");
         int id = sc.nextInt();
         sc.nextLine();
-        Staff s = staffManger.findById(id);
+        Employee s = employeeManager.findById(id);
         System.out.println("Which field you want to update?\n1. Full name\n2. Email address\n3. Role \n4. Skype\n5. Mobile number");
         int choice = sc.nextInt();
         sc.nextLine();
@@ -213,7 +258,7 @@ public class App
         System.out.println("Enter Staff id");
         int id = sc.nextInt();
         sc.nextLine();
-        staffManger.remove(id);
+        employeeManager.remove(employeeManager.findById(id));
     }
 
 
@@ -222,41 +267,41 @@ public class App
     private static void appointmentOperation(int choice) {
         switch(choice) {
             case 1:
-                createAppointmentfMenu();
+                createAppointmentMenu();
                 break;
             case 2:
-                updateAppointmentfMenu();
+                updateAppointmentMenu();
                 break;
             case 3:
-                removeAppointmentfMenu();
+                removeAppointmentMenu();
                 break;
             default:
                 System.out.println("Choice does not exist");
         }
     }
 
-    private static void createAppointmentfMenu() {
+    private static void createAppointmentMenu() {
         System.out.println("Enter Staff id:");
         int staffId = sc.nextInt();
         sc.nextLine();
-        Staff staff = staffManger.findById(staffId);
+        Employee employee = employeeManager.findById(staffId);
         System.out.println("Enter Customer id:");
         int customerId = sc.nextInt();
         sc.nextLine();
         Customer customer = customerManager.findById(customerId);
-        Appointment a = new Appointment(new Date(), staff, customer);
+        Appointment a = new Appointment(new Date(), employee, customer);
         appointmentOperator.create(a);
     }
 
-    private static void updateAppointmentfMenu() {
+    private static void updateAppointmentMenu() {
 
     }
 
-    private static void removeAppointmentfMenu() {
+    private static void removeAppointmentMenu() {
         System.out.println("Enter Appointment id");
         int id = sc.nextInt();
         sc.nextLine();
-        appointmentManager.remove(id);
+        appointmentManager.remove(appointmentManager.findById(id));
     }
 
     private static void createEvent() {
@@ -287,9 +332,9 @@ public class App
                 customerOperator.addCreateEvent(event);
             }
             if(entityChoice == 2) {
-                List<Action<Staff>> actions = new ArrayList<>();
+                List<Action<Employee>> actions = new ArrayList<>();
                 do {
-                    Action<Staff> action = createActionMenu(entityChoice, staffOperator);
+                    Action<Employee> action = createActionMenu(entityChoice, staffOperator);
                     actions.add(action);
                     System.out.println("Insert 1 to add another action");
                     int addMore = sc.nextInt();
@@ -298,7 +343,7 @@ public class App
                         break;
                     }
                 } while(true);
-                CreateEvent<Staff> event = new CreateEvent<>(condition);
+                CreateEvent<Employee> event = new CreateEvent<>(condition);
                 event.addActions(actions);
                 staffOperator.addCreateEvent(event);
             }
@@ -339,9 +384,9 @@ public class App
                 customerOperator.addUpdateEvent(event);
             }
             if(entityChoice == 2) {
-                List<Action<Staff>> actions = new ArrayList<>();
+                List<Action<Employee>> actions = new ArrayList<>();
                 do {
-                    Action<Staff> action = createActionMenu(entityChoice, staffOperator);
+                    Action<Employee> action = createActionMenu(entityChoice, staffOperator);
                     actions.add(action);
                     System.out.println("Insert 1 to add another action");
                     int addMore = sc.nextInt();
@@ -350,7 +395,7 @@ public class App
                         break;
                     }
                 } while(true);
-                UpdateEvent<Staff> event = new UpdateEvent<>(condition, field);
+                UpdateEvent<Employee> event = new UpdateEvent<>(condition, field);
                 event.addActions(actions);
                 staffOperator.addUpdateEvent(event);
             }
@@ -389,9 +434,9 @@ public class App
                 customerOperator.addRemoveEvent(event);
             }
             if(entityChoice == 2) {
-                List<Action<Staff>> actions = new ArrayList<>();
+                List<Action<Employee>> actions = new ArrayList<>();
                 do {
-                    Action<Staff> action = createActionMenu(entityChoice, staffOperator);
+                    Action<Employee> action = createActionMenu(entityChoice, staffOperator);
                     actions.add(action);
                     System.out.println("Insert 1 to add another action");
                     int addMore = sc.nextInt();
@@ -400,7 +445,7 @@ public class App
                         break;
                     }
                 } while(true);
-                RemoveEvent<Staff> event = new RemoveEvent<>(condition);
+                RemoveEvent<Employee> event = new RemoveEvent<>(condition);
                 event.addActions(actions);
                 staffOperator.addRemoveEvent(event);
             }

@@ -5,22 +5,15 @@ import java.util.Date;
 public class Appointment {
     private int id;
     private Date date;
-    private Staff staff;
+    private Employee employee;
     private Customer customer;
 
     private static int nextId = 1000;
 
-    public Appointment(int id, Date date, Staff staff, Customer customer) {
-        this.id = id;
-        this.date = date;
-        this.staff = staff;
-        this.customer = customer;
-    }
-
-    public Appointment(Date date, Staff staff, Customer customer) {
+    public Appointment(Date date, Employee employee, Customer customer) {
         this.id = nextId;
         this.date = date;
-        this.staff = staff;
+        this.employee = employee;
         this.customer = customer;
 
         nextId++;
@@ -42,12 +35,12 @@ public class Appointment {
         this.date = date;
     }
 
-    public Staff getStaff() {
-        return staff;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setStaff(Staff staff) {
-        this.staff = staff;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public Customer getCustomer() {
@@ -56,5 +49,15 @@ public class Appointment {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public void print() {
+        System.out.println("Id : " + this.getId());
+        System.out.println("Date : " + this.getDate());
+        System.out.println("Employee : " + this.getEmployee().getId());
+        System.out.println("Customer : " + this.getCustomer().getId());
+
+
+
     }
 }

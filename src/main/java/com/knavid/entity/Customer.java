@@ -91,4 +91,16 @@ public class Customer implements Phonable, Emailable {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
+    public void print(){
+        System.out.println("Id : " + this.getId());
+        System.out.println("First Name : " + this.getFirstName());
+        System.out.println("Last Name : " + this.getLastName());
+        System.out.println("Email : " + this.getEmail());
+        System.out.println("Age : " + this.getAge());
+        System.out.println("Registration Date : " + this.getRegistrationDate());
+        System.out.println("Phone Number : " + this.getPhoneNumber());
+
+
+    }
 }

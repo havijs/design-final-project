@@ -25,6 +25,20 @@ public class App
 
     public static void main( String[] args )
     {
+        Action<Customer> action1 = new Call<>();
+        Action<Customer> action2 = new Email<>();
+        Action<Customer> action3 = new ChangeField<>("firstName", customerOperator, "Navid");
+        UpdateEvent<Customer> createEvent = new UpdateEvent<>("age > 10 OR firstName = Navid", "firstName");
+        CreateEvent<Customer> updateEvent = new CreateEvent<>("age < 10");
+        RemoveEvent<Customer> removeEvent = new RemoveEvent<>("age < 10");
+        createEvent.addAction(action1);
+        createEvent.addAction(action2);
+        updateEvent.addAction(action3);
+        removeEvent.addAction(action3);
+        customerOperator.addUpdateEvent(createEvent);
+        customerOperator.addCreateEvent(updateEvent);
+        customerOperator.addRemoveEvent(removeEvent);
+
         sc = new Scanner(System.in);
         do {
             System.out.println("1. List entities\n2. Operations\n3. Create event");

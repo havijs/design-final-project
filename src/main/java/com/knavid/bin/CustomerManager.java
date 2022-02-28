@@ -105,35 +105,22 @@ public class CustomerManager implements DataManager<Customer> {
     }
 
     public void remove(Customer c) {
+        List<Customer> customers = read();
 
-        JSONObject cust = new JSONObject();
-        cust.put("customer", new Gson().toJson(c));
-
-        JSONParser jsonParser = new JSONParser();
-
-        try (FileReader reader = new FileReader("customers.json")) {
-            // Read JSON file
-            Object obj = jsonParser.parse(reader);
-
-            customerList = (JSONArray) obj;
-
-            customerList.remove(cust);
-
-            try (FileWriter file = new FileWriter("customers.json")) {
-                // We can write any JSONArray or JSONObject instance to the file
-                file.write(customerList.toJSONString());
-                file.flush();
-
-            } catch (IOException e) {
-                System.out.println("wrong");
+        for (Customer customer : customers) {
+            if (customer.getId() == c.getId()) {
+                customers.remove(c);
+                break;
             }
+        }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        try (FileWriter file = new FileWriter("customers.json")) {
+            // We can write any JSONArray or JSONObject instance to the file
+            file.write(new Gson().toJson(customers));
+            file.flush();
+
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+            System.out.println("wrong");
         }
 
     }

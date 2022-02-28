@@ -74,7 +74,7 @@ public abstract class Event<T> {
                 }
 
             } else if(operator.equals("<")) {
-                if(field.getType().isAssignableFrom(Integer.class)) {
+                if(field.getType().isAssignableFrom(int.class)) {
                     int convertedExpectedValue = Integer.parseInt(expectedValue);
                     int convertedValue = (int) value;
                     return convertedExpectedValue > convertedValue;

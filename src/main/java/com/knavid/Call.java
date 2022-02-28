@@ -5,7 +5,7 @@ public class Call<T> implements Action<T> {
     @Override
     public void execute(T object) {
         Phonable p = (Phonable) object;
-        System.out.print("Number %s has called".formatted(p.getPhoneNumber()));
+        System.out.println("Number %s has called".formatted(p.getPhoneNumber()));
     }
     
 }
